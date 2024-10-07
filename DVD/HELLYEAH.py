@@ -21,16 +21,6 @@ x = random.choice([0, WIDTH - logo_width])  # Start from a corner
 y = random.choice([0, HEIGHT - logo_height])
 speed_x, speed_y = 5, 5  # Speed at which the logo moves
 
-# Ensure it moves towards the next corner
-if x == 0 and y == 0:
-    speed_x, speed_y = 5, 5  # Move bottom right
-elif x == WIDTH - logo_width and y == 0:
-    speed_x, speed_y = -5, 5  # Move bottom left
-elif x == 0 and y == HEIGHT - logo_height:
-    speed_x, speed_y = 5, -5  # Move top right
-else:
-    speed_x, speed_y = -5, -5  # Move top left
-
 # Game loop
 running = True
 clock = pygame.time.Clock()
@@ -44,15 +34,20 @@ while running:
     x += speed_x
     y += speed_y
 
-    # Check if it hits any corner and reverse direction
-    if (x <= 0 and y <= 0):  # Top left corner
-        speed_x, speed_y = 5, 5
-    elif (x >= WIDTH - logo_width and y <= 0):  # Top right corner
-        speed_x, speed_y = -5, 5
-    elif (x <= 0 and y >= HEIGHT - logo_height):  # Bottom left corner
-        speed_x, speed_y = 5, -5
-    elif (x >= WIDTH - logo_width and y >= HEIGHT - logo_height):  # Bottom right corner
-        speed_x, speed_y = -5, -5
+    # Check if it hits any edge and reverse direction
+    if x <= 0:  # Left edge
+        x = 0
+        speed_x = -speed_x
+    elif x >= WIDTH - logo_width:  # Right edge
+        x = WIDTH - logo_width
+        speed_x = -speed_x
+        
+    if y <= 0:  # Top edge
+        y = 0
+        speed_y = -speed_y
+    elif y >= HEIGHT - logo_height:  # Bottom edge
+        y = HEIGHT - logo_height
+        speed_y = -speed_y
 
     # Fill the screen with white
     screen.fill(WHITE)
